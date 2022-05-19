@@ -1,0 +1,8 @@
+<!-- Este es el archivo de strings en inglés -->
+<resources>
+
+    <string name="app_name">My First Application</string>
+
+    <string name="un_texto">This is a TEXT!</string>
+
+</resources>

@@ -1,0 +1,8 @@
+<!-- Este es el archivo de strings en francés -->
+<resources>
+
+    <string name="app_name">Ma première candidature</string>
+
+    <string name="un_texto">Ceci est un TEXTE</string>
+
+</resources>

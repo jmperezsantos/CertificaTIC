@@ -1,0 +1,8 @@
+<!-- Este es el archivo de strings en español -->
+<resources>
+
+    <string name="app_name">Mi Primer Aplicación</string>
+
+    <string name="un_texto">Este es un TEXTO</string>
+
+</resources>
