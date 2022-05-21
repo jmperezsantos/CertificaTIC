@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CollectionsExample</string>
+
+
+    <string name="texto_generico">Cualquier cosa</string>
+
+    <string name="username_placeholder">Nombre de usuario</string>
+
+    <string name="lastname_placeholder">Appellido de usuario</string>
+
+</resources>
