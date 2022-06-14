@@ -18,7 +18,7 @@ class UsersListViewAdapter(private val userList: List<UserEntity>) : BaseAdapter
 //    }
 
     //Obtiene de manera individual los elementos a ser renderizados, basado en un "index"
-    override fun getItem(index: Int): Any {
+    override fun getItem(index: Int): UserEntity {
         return this.userList.get(index)
     }
     //Sintaxis Java
@@ -36,14 +36,18 @@ class UsersListViewAdapter(private val userList: List<UserEntity>) : BaseAdapter
     //}
 
     //Obtiene la vista a mostrar en la Colección
-    override fun getView(index: Int, reusableView: View?, parent: ViewGroup?): View {
+    override fun getView(index: Int,
+                         reusableView: View?,
+                         parent: ViewGroup?): View {
 
         //TODO validar el posible error al hacer cast con un null
         var vContent: View? = reusableView
         if (reusableView == null) {
             //Crear la vista
             val inflater = LayoutInflater.from(parent?.context)
-            vContent = inflater.inflate(R.layout.user_item_layout, parent, false)
+            vContent = inflater.inflate(R.layout.user_item_layout,
+                parent,
+                false)
         }
 
         //Configurar la vista
