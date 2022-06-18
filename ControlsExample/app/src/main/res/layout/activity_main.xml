@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,38 +8,128 @@
     android:padding="10dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvTextView"
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvTextView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Hello World!" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etEditText"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:hint="Escribe algo:"-->
+    <!--        android:inputType="text" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btnButton"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Presiona!"-->
+    <!--        android:textAllCaps="false" />-->
+
+    <!--    <Switch-->
+    <!--        android:id="@+id/sSwitch1"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:checked="true"-->
+    <!--        android:text="Encendido" />-->
+
+    <!--    <Switch-->
+    <!--        android:id="@+id/sSwitch2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:checked="false"-->
+    <!--        android:text="Apagado" />-->
+
+    <!--    <CheckBox-->
+    <!--        android:id="@+id/cbCheckBox1"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:checked="true"-->
+    <!--        android:text="Check Encendido" />-->
+
+    <!--    <CheckBox-->
+    <!--        android:id="@+id/cbCheckBox2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:checked="false"-->
+    <!--        android:text="Apagado" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvComodin"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content" />-->
+
+    <!--    <RadioGroup-->
+    <!--        android:id="@+id/rgRadioGroupOpciones"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/rbOpc1"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Opcion 1" />-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/rbOpc2"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:checked="true"-->
+    <!--            android:text="Opcion 2" />-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/rbOpc3"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Opcion 3" />-->
+
+    <!--        <RadioButton-->
+    <!--            android:id="@+id/rbOpcN"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Opcion N" />-->
+    <!--    </RadioGroup>-->
+
+    <!--    <com.google.android.material.slider.Slider-->
+    <!--        android:id="@+id/sSlider"-->
+    <!--        app:labelBehavior="gone"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:stepSize=".05"-->
+    <!--        android:value=".4" />-->
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/my_image" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/walter_white" />
+
+    <ImageButton
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/walter_white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabWalter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:src="@drawable/walter_white_icon"
+        android:tooltipText="TEXTO"
+        app:tint="@color/my_color" />
 
-    <EditText
-        android:id="@+id/etEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Escribe algo:"
-        android:inputType="text" />
-
-    <Button
-        android:id="@+id/btnButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Presiona!"
-        android:textAllCaps="false" />
-
-    <Switch
-        android:id="@+id/sSwitch1"
+    <ProgressBar
+        android:id="@+id/pbProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="Encendido" />
-
-    <Switch
-        android:id="@+id/sSwitch2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="Apagado" />
+        android:backgroundTint="@color/my_color" />
 
 </LinearLayout>
