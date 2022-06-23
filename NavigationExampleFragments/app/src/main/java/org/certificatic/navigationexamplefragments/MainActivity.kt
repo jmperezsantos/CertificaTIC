@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         //Generar instancia del Fragment a mostrar
         val userListFragment = UserListFragment.newInstance()
 
-        //Inicializa una transacción (reemplazar el fragment)
+        //Inicializar una transacción (reemplazar el fragment)
         val transaction = this.supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragmentContainer, userListFragment)
 

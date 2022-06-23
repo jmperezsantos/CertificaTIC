@@ -1,11 +1,14 @@
 package org.certificatic.navigationexamplefragments.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.fragment.app.FragmentActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.certificatic.navigationexamplefragments.R
 import org.certificatic.navigationexamplefragments.adapter.UserListAdapter
 import org.certificatic.navigationexamplefragments.model.UserModel
@@ -57,7 +60,34 @@ class UserListFragment : Fragment() {
         val lvUsers = view.findViewById<ListView>(R.id.lvUsers)
         lvUsers.adapter = UserListAdapter(userService.getUsers())
 
-        //TODO: Agregar onItemClickListener y navegar
+        lvUsers.setOnItemClickListener { listView, view, index, hash ->
+
+            val user = listView.adapter.getItem(index) as UserModel
+            Log.d("MPS", "Usuario seleccionado: $user")
+
+            val userDetail = UserDetailFragment.newInstance(user)
+
+            val trans = this.requireActivity().supportFragmentManager.beginTransaction()
+            trans.replace(R.id.fragmentContainer, userDetail)
+            trans.addToBackStack(null)
+
+            trans.commit()
+
+        }
+
+        //Botón para mostrar formulario de usuarios
+        val fabCrear = view.findViewById<FloatingActionButton>(R.id.fabCrear)
+        fabCrear.setOnClickListener {
+
+            val createUserFragment = CreateUserFragment.newInstance()
+
+            val trans = this.requireActivity().supportFragmentManager.beginTransaction()
+            trans.replace(R.id.fragmentContainer, createUserFragment)
+            trans.addToBackStack("UserListFragment")
+
+            trans.commit()
+
+        }
 
     }
 

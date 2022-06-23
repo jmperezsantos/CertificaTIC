@@ -4,4 +4,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name_placeholer">Nombre</string>
     <string name="lastname_placeholder">Apellidos</string>
+    <string name="user_detail_title">Información del Usuario</string>
+
+    <string name="age_placeholder">Edad</string>
+    <string name="active_placeholder">Activo</string>
+    <string name="new_user_title">Crear Nuevo Usuario</string>
+    <string name="save_btn">Guardar!</string>
+
 </resources>
