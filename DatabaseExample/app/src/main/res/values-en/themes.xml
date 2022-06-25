@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="UserEditTextStyle">
+
+        <item name="android:backgroundTint">#FFFFFF</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:enabled">false</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColorPrimary">#FF0000</item>
+
+    </style>
+
+</resources>
