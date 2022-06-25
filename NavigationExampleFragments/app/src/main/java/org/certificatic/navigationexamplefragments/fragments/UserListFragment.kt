@@ -55,7 +55,7 @@ class UserListFragment : Fragment() {
         //TODO: Configuración "gráfica" del fragment
         // consulta de la lista de usuarios a un 'servicio' (BD)
 
-        val userService = UserService()
+        val userService = UserService.instance
 
         val lvUsers = view.findViewById<ListView>(R.id.lvUsers)
         lvUsers.adapter = UserListAdapter(userService.getUsers())

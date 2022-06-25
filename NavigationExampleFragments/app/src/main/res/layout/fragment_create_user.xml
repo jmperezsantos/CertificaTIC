@@ -18,13 +18,15 @@
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/name_placeholer" />
+        android:hint="@string/name_placeholer"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/etLastname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/lastname_placeholder" />
+        android:hint="@string/lastname_placeholder"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/etEdad"

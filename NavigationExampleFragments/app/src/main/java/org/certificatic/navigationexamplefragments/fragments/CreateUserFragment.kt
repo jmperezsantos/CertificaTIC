@@ -6,7 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import androidx.annotation.IntegerRes
 import org.certificatic.navigationexamplefragments.R
+import org.certificatic.navigationexamplefragments.model.UserModel
+import org.certificatic.navigationexamplefragments.services.UserService
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -52,13 +59,29 @@ class CreateUserFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: obtener las referencias de los Campos de texto
+        val etName = view.findViewById<EditText>(R.id.etName)
+        val etApellido = view.findViewById<EditText>(R.id.etLastname)
+        val etAge = view.findViewById<EditText>(R.id.etEdad)
+        val cbActivo = view.findViewById<CheckBox>(R.id.cbActive)
 
         val btnGuardar = view.findViewById<Button>(R.id.btnGuardar)
 
         btnGuardar.setOnClickListener {
 
-            //TODO: Guardar el usuario en el Servicio
+            val userService = UserService.instance
+            val edad = Integer.parseInt(etAge.text.toString())
+
+            //Se crea el usuario con los valores capturados en el formulario
+            val user = UserModel(
+                Random().nextInt(), //Se genera un id aleatorio
+                etName.text.toString(),
+                etApellido.text.toString(),
+                edad,
+                cbActivo.isChecked
+            )
+
+            //Se agrega el usuario creado a la lista por medio del servicio
+            userService.addUser(user)
 
             this.requireActivity().supportFragmentManager.popBackStack()
 

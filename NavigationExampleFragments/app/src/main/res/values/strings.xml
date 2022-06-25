@@ -9,6 +9,10 @@
     <string name="age_placeholder">Edad</string>
     <string name="active_placeholder">Activo</string>
     <string name="new_user_title">Crear Nuevo Usuario</string>
+
     <string name="save_btn">Guardar!</string>
+
+    <string name="btn_delete">Eliminar</string>
+    <string name="btn_edit">Editar</string>
 
 </resources>
