@@ -28,4 +28,10 @@ interface UserWSClient {
         @Path("usuarioId") usuarioId: String
     ): Call<UsuarioDTO>
 
+    //Borrar un registro
+    @DELETE("usuarios/{usuarioId}.json")
+    fun deleteUser(
+        @Path("usuarioId") usuarioId: String
+    ): Call<Void>
+
 }

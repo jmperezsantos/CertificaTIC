@@ -1,5 +1,7 @@
 package org.certificatic.webserviceexample.dto
 
+import java.io.Serializable
+
 data class UsuarioDTO(
     //Se ignora la propiedad al momento de generar el JSON
     @Transient var id: String? = null,
@@ -7,7 +9,7 @@ data class UsuarioDTO(
     var apellido: String,
     var edad: Int,
     var nombre: String
-) {
+) : Serializable {
 
     override fun toString(): String {
         return "UsuarioDTO(id=$id, activo=$activo, apellido='$apellido', edad=$edad, nombre='$nombre')"

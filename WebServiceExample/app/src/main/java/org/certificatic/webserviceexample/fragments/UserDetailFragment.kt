@@ -1,6 +1,8 @@
 package org.certificatic.webserviceexample.fragments
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,9 +13,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
+import com.airbnb.lottie.LottieAnimationView
 import org.certificatic.webserviceexample.R
+import org.certificatic.webserviceexample.dto.UsuarioDTO
 import org.certificatic.webserviceexample.model.UserModel
 import org.certificatic.webserviceexample.services.UserService
+import org.certificatic.webserviceexample.services.UserServiceWS
 
 
 /**
@@ -28,7 +33,7 @@ class UserDetailFragment : Fragment() {
 
         //TODO Tiene que recibir un UsuarioDTO
         @JvmStatic
-        fun newInstance(user: UserModel): UserDetailFragment {
+        fun newInstance(user: UsuarioDTO): UserDetailFragment {
 
             return UserDetailFragment().apply {
                 arguments = Bundle().apply {
@@ -41,7 +46,7 @@ class UserDetailFragment : Fragment() {
     }
 
     //Propiedades del Fragment
-    private lateinit var user: UserModel
+    private lateinit var user: UsuarioDTO
 
     //Configuración "Lógica"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +54,7 @@ class UserDetailFragment : Fragment() {
 
         this.arguments?.let { it ->
 
-            this.user = it.getSerializable("USER_ARG") as UserModel
+            this.user = it.getSerializable("USER_ARG") as UsuarioDTO
             Log.d("MPS", "Llegó: $user")
 
         }
@@ -82,14 +87,14 @@ class UserDetailFragment : Fragment() {
         val btnDelete = view.findViewById<Button>(R.id.btnDelete)
         val btnEditar = view.findViewById<Button>(R.id.btnEditar)
         val btnGuardar = view.findViewById<Button>(R.id.btnGuardar)
+        val lavLoading = view.findViewById<View>(R.id.lavLoading)
 
         btnDelete.setOnClickListener {
 
             //Se borra al usuario de la lista, por medio del servicio
-            UserService.instance.deleteUser(this.user.uid)
+            // UserService.instance.deleteUser(this.user.uid)
 
-            //Se regresa a la lista de usuarios.
-            this.requireActivity().supportFragmentManager.popBackStack()
+            confirmAlert(this.user)
 
         }
 
@@ -112,25 +117,83 @@ class UserDetailFragment : Fragment() {
 
         btnGuardar.setOnClickListener {
 
-            this.user.name = tvName.text.toString()
-            this.user.lastname = tvLastname.text.toString()
-            this.user.age = Integer.parseInt(tvAge.text.toString())
-            this.user.active = sActivo.isChecked
+            lavLoading.visibility = View.VISIBLE
 
-            //TODO Consumir el WS en lugar de la BD
+            this.user.nombre = tvName.text.toString()
+            this.user.apellido = tvLastname.text.toString()
+            this.user.edad = Integer.parseInt(tvAge.text.toString())
+            this.user.activo = sActivo.isChecked
 
-            UserService.instance.updateUser(this.user)
+            //UserService.instance.updateUser(this.user)
+            UserServiceWS.instance.updateUser(
+                this.user,
+                { updatedUser ->
+                    showDialog("Usuario actualizado exitosamente")
 
-            this.requireActivity().supportFragmentManager.popBackStack()
+                    lavLoading.visibility = View.INVISIBLE
+                },
+                { errorMessage ->
+                    showDialog(errorMessage)
 
+                    lavLoading.visibility = View.INVISIBLE
+                }
+            )
         }
 
-        tvName.setText(this.user.name)
-        tvLastname.setText(this.user.lastname)
-        tvAge.setText("${this.user.age}")
+        tvName.setText(this.user.nombre)
+        tvLastname.setText(this.user.apellido)
+        tvAge.setText("${this.user.edad}")
 
-        sActivo.isChecked = this.user.active
+        sActivo.isChecked = this.user.activo
 
+    }
+
+    private fun showDialog(message: String) {
+
+        val builder = AlertDialog.Builder(this.requireContext())
+
+        builder.setMessage(message)
+            .setTitle("Atención!")
+            .setPositiveButton("Aceptar",
+                DialogInterface.OnClickListener { dialog, id ->
+
+                    dialog.cancel()
+
+                    this.requireActivity().supportFragmentManager.popBackStack()
+
+                })
+
+        builder.create().show()
+
+    }
+
+    private fun confirmAlert(userToDelete: UsuarioDTO) {
+
+        val builder = AlertDialog.Builder(this.requireContext())
+
+        val message = "Estás seguro de eliminar a ${userToDelete.nombre} ${userToDelete.apellido}"
+
+        builder.setMessage(message)
+            .setTitle("Atención!")
+            .setPositiveButton("Sí",
+                DialogInterface.OnClickListener { dialog, id ->
+
+                    UserServiceWS.instance.deleteUser(userToDelete.id!!,
+                        {
+                            showDialog("${userToDelete.nombre} ${userToDelete.apellido} eliminado exitosamente")
+                        },
+                        { errorMessage ->
+                            showDialog(errorMessage)
+                        })
+
+                })
+            .setNegativeButton("No") { dialog, id ->
+
+                dialog.cancel()
+
+            }
+
+        builder.create().show()
     }
 
 }

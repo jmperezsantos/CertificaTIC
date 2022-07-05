@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.certificatic.webserviceexample.R
 import org.certificatic.webserviceexample.adapter.UserListAdapter
+import org.certificatic.webserviceexample.dto.UsuarioDTO
 import org.certificatic.webserviceexample.model.UserModel
 import org.certificatic.webserviceexample.services.UserService
 import org.certificatic.webserviceexample.services.UserServiceWS
@@ -21,6 +23,10 @@ import org.certificatic.webserviceexample.services.UserServiceWS
  * create an instance of this fragment.
  */
 class UserListFragment : Fragment() {
+
+    private lateinit var lvUsers: ListView
+    private lateinit var lavLoading: LottieAnimationView
+    private lateinit var srlSwipe: SwipeRefreshLayout
 
     //Primer método (después del constructor) en ser ejecutado
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,15 +66,19 @@ class UserListFragment : Fragment() {
 //        val userService = UserService.instance
 //        val listUsers = userService.getUsers()
 
-        val lavLoading = view.findViewById<LottieAnimationView>(R.id.lavLoading)
-        lavLoading.visibility = View.VISIBLE
+        this.lavLoading = view.findViewById<LottieAnimationView>(R.id.lavLoading)
 
-        val lvUsers = view.findViewById<ListView>(R.id.lvUsers)
+        this.lvUsers = view.findViewById<ListView>(R.id.lvUsers)
+
+        this.srlSwipe = view.findViewById<SwipeRefreshLayout>(R.id.srlSwipe)
+        srlSwipe.setOnRefreshListener {
+            getAllUsers()
+        }
 
         lvUsers.setOnItemClickListener { listView, view, index, hash ->
 
             //TODO Arreglar este cast que falla
-            val user = listView.adapter.getItem(index) as UserModel
+            val user = listView.adapter.getItem(index) as UsuarioDTO
             Log.d("MPS", "Usuario seleccionado: $user")
 
             val userDetail = UserDetailFragment.newInstance(user)
@@ -95,6 +105,14 @@ class UserListFragment : Fragment() {
 
         }
 
+        getAllUsers()
+
+    }
+
+    private fun getAllUsers() {
+
+        lavLoading.visibility = View.VISIBLE
+
         //Consumo WS
         val userServiceWS = UserServiceWS.instance
         userServiceWS.getAllUsers(
@@ -103,11 +121,14 @@ class UserListFragment : Fragment() {
                 lvUsers.adapter = UserListAdapter(usuarios)
 
                 lavLoading.visibility = View.INVISIBLE
+                srlSwipe.isRefreshing = false
 
             },
             { error ->
                 Log.e("MPS", "Ocurrió un error al consumir el WS ($error)")
+
                 lavLoading.visibility = View.INVISIBLE
+                srlSwipe.isRefreshing = false
             })
 
     }

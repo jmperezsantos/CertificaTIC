@@ -103,6 +103,63 @@ class UserServiceWS {
                 }
             }
         )
+    }
 
+    fun updateUser(
+        usuario: UsuarioDTO,
+        success: (UsuarioDTO) -> Unit,
+        error: (String) -> Unit
+    ) {
+
+        this.userWSClient.putUser(usuario, usuario.id!!).enqueue(
+            object : Callback<UsuarioDTO> {
+                override fun onResponse(
+                    call: Call<UsuarioDTO>,
+                    response: Response<UsuarioDTO>
+                ) {
+
+                    if (response.isSuccessful) {
+                        Log.i("MPS", "Se actualizó el usuario: ${response.body()}")
+                        success(response.body()!!)
+                    } else {
+                        Log.e("MPS", "Ocurrió un error al actualizar: ${response.message()}")
+                        error(response.message())
+                    }
+
+                }
+
+                override fun onFailure(call: Call<UsuarioDTO>, t: Throwable) {
+                    error(t.message.toString())
+                }
+            })
+
+    }
+
+    fun deleteUser(
+        userId: String,
+        success: () -> Unit,
+        error: (String) -> Unit
+    ) {
+
+        this.userWSClient.deleteUser(userId).enqueue(
+            object : Callback<Void> {
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+
+                    if (response.isSuccessful) {
+                        success()
+                    } else {
+                        error(response.message())
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    error("Ocurrió un error: ${t.message}")
+                }
+
+            }
+        )
     }
 }

@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".fragments.UserListFragment">
 
-    <ListView
-        android:id="@+id/lvUsers"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlSwipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/user_list_item" />
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lvUsers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/user_list_item" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCrear"
