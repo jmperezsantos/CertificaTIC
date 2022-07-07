@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LocationExample</string>
+    <string name="latitud">Latitud:</string>
+
+    <string name="longitud">Longitud:</string>
+
+</resources>
