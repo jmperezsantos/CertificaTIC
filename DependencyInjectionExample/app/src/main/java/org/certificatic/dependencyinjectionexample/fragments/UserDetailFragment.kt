@@ -14,8 +14,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
+import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.dependencyinjectionexample.dto.UsuarioDTO
 import org.certificatic.dependencyinjectionexample.services.UserServiceWS
+import javax.inject.Inject
 
 
 /**
@@ -23,7 +25,11 @@ import org.certificatic.dependencyinjectionexample.services.UserServiceWS
  * Use the [UserDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class UserDetailFragment : Fragment() {
+
+    @Inject
+    lateinit var userService: UserServiceWS
 
     //Para acomodar miembros (métodos/propiedades) estáticos
     companion object {
@@ -122,7 +128,7 @@ class UserDetailFragment : Fragment() {
             this.user.activo = sActivo.isChecked
 
             //UserService.instance.updateUser(this.user)
-            UserServiceWS.instance.updateUser(
+            this.userService.updateUser(
                 this.user,
                 { updatedUser ->
                     showDialog("Usuario actualizado exitosamente")
@@ -175,7 +181,7 @@ class UserDetailFragment : Fragment() {
             .setPositiveButton("Sí",
                 DialogInterface.OnClickListener { dialog, id ->
 
-                    UserServiceWS.instance.deleteUser(userToDelete.id!!,
+                    this.userService.deleteUser(userToDelete.id!!,
                         {
                             showDialog("${userToDelete.nombre} ${userToDelete.apellido} eliminado exitosamente")
                         },

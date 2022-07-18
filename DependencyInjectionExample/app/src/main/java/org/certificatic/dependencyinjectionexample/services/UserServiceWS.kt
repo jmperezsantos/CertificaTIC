@@ -3,29 +3,25 @@ package org.certificatic.dependencyinjectionexample.services
 import android.util.Log
 import org.certificatic.dependencyinjectionexample.dto.UsuarioDTO
 import org.certificatic.dependencyinjectionexample.wsclient.UserWSClient
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class UserServiceWS {
+class UserServiceWS(var userWSClient: UserWSClient) {
 
-    companion object {
 
+    /*companion object {
         val instance: UserServiceWS = UserServiceWS()
+    }*/
 
-    }
-
-    private var userWSClient: UserWSClient
-
-    private constructor() {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://certificatic-wsexample-default-rtdb.firebaseio.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        this.userWSClient = retrofit.create(UserWSClient::class.java)
-
-    }
+    //TODO quitar este comentario
+//    constructor {
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("https://certificatic-wsexample-default-rtdb.firebaseio.com/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//        this.userWSClient = retrofit.create(UserWSClient::class.java)
+//    }
 
     fun getAllUsers(
         success: (List<UsuarioDTO>) -> Unit,

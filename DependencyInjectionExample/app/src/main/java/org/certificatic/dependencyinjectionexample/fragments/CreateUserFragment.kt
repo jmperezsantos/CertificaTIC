@@ -12,18 +12,23 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import com.airbnb.lottie.LottieAnimationView
+import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.dependencyinjectionexample.R
 import org.certificatic.dependencyinjectionexample.dto.UsuarioDTO
 
 import org.certificatic.dependencyinjectionexample.services.UserServiceWS
-import java.util.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  * Use the [CreateUserFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class CreateUserFragment : Fragment() {
+
+    @Inject
+    lateinit var userService: UserServiceWS
 
     companion object {
 
@@ -75,9 +80,6 @@ class CreateUserFragment : Fragment() {
             //Se pone un "loading"
             lavLoading.visibility = View.VISIBLE
 
-            //val userService = UserService.instance
-            val userService = UserServiceWS.instance
-
             val edad = Integer.parseInt(etAge.text.toString())
 
             //Se crea el usuario con los valores capturados en el formulario
@@ -98,7 +100,7 @@ class CreateUserFragment : Fragment() {
 
             //Se agrega el usuario creado a la lista por medio del servicio
             //userService.addUser(user)
-            userService.createUser(user, { nuevoId ->
+            this.userService.createUser(user, { nuevoId ->
 
                 showAlert("Usuario exitosamente creado: $nuevoId")
 
@@ -120,7 +122,7 @@ class CreateUserFragment : Fragment() {
 
     }
 
-    fun showAlert(mensaje: String) {
+    private fun showAlert(mensaje: String) {
 
         val builder = AlertDialog.Builder(
             this.requireActivity()

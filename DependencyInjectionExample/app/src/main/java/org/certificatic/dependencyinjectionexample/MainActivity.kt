@@ -2,8 +2,11 @@ package org.certificatic.dependencyinjectionexample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.dependencyinjectionexample.fragments.UserListFragment
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

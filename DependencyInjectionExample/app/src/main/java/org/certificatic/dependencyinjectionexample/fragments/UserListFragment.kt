@@ -10,17 +10,19 @@ import android.widget.ListView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.dependencyinjectionexample.R
 import org.certificatic.dependencyinjectionexample.adapter.UserListAdapter
 import org.certificatic.dependencyinjectionexample.dto.UsuarioDTO
 import org.certificatic.dependencyinjectionexample.services.UserServiceWS
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
+@AndroidEntryPoint
 class UserListFragment : Fragment() {
+
+    @Inject
+    lateinit var userService: UserServiceWS
 
     private lateinit var lvUsers: ListView
     private lateinit var lavLoading: LottieAnimationView
@@ -112,8 +114,7 @@ class UserListFragment : Fragment() {
         lavLoading.visibility = View.VISIBLE
 
         //Consumo WS
-        val userServiceWS = UserServiceWS.instance
-        userServiceWS.getAllUsers(
+        this.userService.getAllUsers(
             { usuarios ->
 
                 lvUsers.adapter = UserListAdapter(usuarios)
