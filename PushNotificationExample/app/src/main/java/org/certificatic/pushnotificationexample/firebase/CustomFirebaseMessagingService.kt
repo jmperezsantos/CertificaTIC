@@ -28,8 +28,10 @@ class CustomFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val title = message.notification?.title
-        val body = message.notification?.body
+//        val title = message.notification?.title
+//        val body = message.notification?.body
+        val title = message.data["title"]
+        val body = message.data["body"]
 
         Log.i("MPS", "TITULO: $title")
         Log.i("MPS", "BODY: $body")

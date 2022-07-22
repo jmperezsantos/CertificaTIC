@@ -1,0 +1,8 @@
+server:
+  port: 8081
+google:
+  firebase:
+    project-id: certificatic-wsexample
+    url: https://fcm.googleapis.com/v1/projects/{PROJECT_ID}/messages:send
+    scope: https://www.googleapis.com/auth/firebase.messaging
+    service_account_file: classpath:google-service-account.json
