@@ -26,7 +26,7 @@ public class TestController {
 	@GetMapping(path = "/push/{token}")
 	public ResponseEntity<Object> push(@PathVariable(name = "token") String token) {
 
-		PushNotificationModel notification = new PushNotificationModel("TEST SERVER",
+		PushNotificationModel notification = new PushNotificationModel("Test PushNotification",
 				"Esta es una prueba desde el servidor");
 
 		Map<String, String> data = new HashMap<>();
