@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CameraExample</string>
+    <string name="tomar_foto">Tomar foto</string>
+</resources>
