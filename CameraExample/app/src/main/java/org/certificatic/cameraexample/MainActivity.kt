@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var ivImage: ImageView
     private lateinit var btnTakePhoto: Button
+
+    private val resultReceiver =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+            setImageToImageView(it)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,21 +37,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-            }
-        }
-
+        this.resultReceiver.launch(null)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data!!.extras!!.get("data") as Bitmap
-            this.ivImage.setImageBitmap(imageBitmap)
-        }
+    private fun setImageToImageView(bitmap: Bitmap?) {
+        this.ivImage.setImageBitmap(bitmap)
     }
+
 }
