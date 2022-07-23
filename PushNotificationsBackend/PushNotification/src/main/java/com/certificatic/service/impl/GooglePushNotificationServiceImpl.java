@@ -56,7 +56,7 @@ public class GooglePushNotificationServiceImpl implements IGooglePushNotificatio
 
 		String token = this.getAccessToken();
 
-		RestTemplate restTemplate = new RestTemplate();
+		RestTemplate restTemplate = new RestTemplate(); // -> Retrofit (equivalente)
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -73,10 +73,10 @@ public class GooglePushNotificationServiceImpl implements IGooglePushNotificatio
 
 			LOGGER.info(json);
 
-			HttpEntity<String> entity = new HttpEntity<String>(json, headers);
+			HttpEntity<String> request = new HttpEntity<String>(json, headers);
 
 			ResponseEntity<String> response = 
-					restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+					restTemplate.exchange(url, HttpMethod.POST, request, String.class);
 
 			LOGGER.info(response.getBody());
 

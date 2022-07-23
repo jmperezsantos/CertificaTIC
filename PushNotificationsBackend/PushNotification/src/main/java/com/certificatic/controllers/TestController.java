@@ -20,11 +20,11 @@ import com.certificatic.service.IGooglePushNotificationService;
 @RequestMapping(path = "/test")
 public class TestController {
 
-	@Autowired
+	@Autowired //Inyectable
 	IGooglePushNotificationService googleService;
 
-	@GetMapping(path = "/push/{token}")
-	public ResponseEntity<Object> push(@PathVariable(name = "token") String token) {
+	@GetMapping(path = "/push/{deviceId}")
+	public ResponseEntity<Object> push(@PathVariable(name = "deviceId") String deviceId) {
 
 		PushNotificationModel notification = new PushNotificationModel("Test PushNotification",
 				"Esta es una prueba desde el servidor");
@@ -32,8 +32,9 @@ public class TestController {
 		Map<String, String> data = new HashMap<>();
 		data.put("extra1", "value1");
 		data.put("extra2", "value2");
+		data.put("idAlgo", "Token de algun producto/servicio");
 		
-		PushNotificationMessageModel message = new PushNotificationMessageModel(token, notification, data);
+		PushNotificationMessageModel message = new PushNotificationMessageModel(deviceId, notification, data);
 		PushNotificationPayload payload = new PushNotificationPayload(message);
 
 		this.googleService.sendNotification(payload);

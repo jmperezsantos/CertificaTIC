@@ -12,6 +12,7 @@ import com.google.firebase.messaging.RemoteMessage
 import org.certificatic.pushnotificationexample.MainActivity
 import org.certificatic.pushnotificationexample.R
 import java.util.*
+import kotlin.math.log
 
 class CustomFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -28,10 +29,14 @@ class CustomFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-//        val title = message.notification?.title
-//        val body = message.notification?.body
-        val title = message.data["title"]
-        val body = message.data["body"]
+        val title = message.notification?.title
+        val body = message.notification?.body
+
+        if (message.data != null) {
+            Log.i("MPS", "idAlgo: ${message.data["idAlgo"]}")
+            Log.i("MPS", "extra1: ${message.data["extra1"]}")
+            Log.i("MPS", "extra2: ${message.data["extra2"]}")
+        }
 
         Log.i("MPS", "TITULO: $title")
         Log.i("MPS", "BODY: $body")
@@ -40,19 +45,28 @@ class CustomFirebaseMessagingService : FirebaseMessagingService() {
         //TODO Guardar en BD  la información enviada por la notificación
 
         val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val channelId = getString(R.string.default_notification_channel_id)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.notification)
+            .setColor(getColor(R.color.notification_color))
             .setContentTitle(title)
             .setContentText(body)
             .setContentIntent(pendingIntent)
 
         val notificationId = Random().nextInt()
 
-        val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        val notificationManager =
+            this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val notification = notificationBuilder.build()
+        notificationManager.notify(notificationId, notification)
 
     }
 

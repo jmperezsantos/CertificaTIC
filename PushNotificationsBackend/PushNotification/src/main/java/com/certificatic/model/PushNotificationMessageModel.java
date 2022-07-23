@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.certificatic.util.Constants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class PushNotificationMessageModel {
 
@@ -16,7 +15,6 @@ public class PushNotificationMessageModel {
 	/**
 	 * Estructura que será mostrada al llegar la notificación push al móvil
 	 */
-	@JsonIgnore
 	private PushNotificationModel notification;
 
 	/**
