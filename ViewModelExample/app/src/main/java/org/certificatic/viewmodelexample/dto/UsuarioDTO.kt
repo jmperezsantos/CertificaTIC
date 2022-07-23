@@ -8,7 +8,8 @@ data class UsuarioDTO(
     var activo: Boolean,
     var apellido: String,
     var edad: Int,
-    var nombre: String
+    var nombre: String,
+    var foto: String? = null
 ) : Serializable {
 
     override fun toString(): String {

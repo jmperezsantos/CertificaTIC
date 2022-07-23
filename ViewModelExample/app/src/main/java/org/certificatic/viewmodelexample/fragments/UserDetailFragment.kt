@@ -3,7 +3,10 @@ package org.certificatic.viewmodelexample.fragments
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,12 +16,15 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Switch
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.viewmodelexample.dto.UsuarioDTO
 import org.certificatic.viewmodelexample.services.UserServiceWS
 import org.certificatic.viewmodelexample.viewmodel.UserDetailViewModel
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 
@@ -31,6 +37,13 @@ import javax.inject.Inject
 class UserDetailFragment : Fragment() {
 
     lateinit var viewModel: UserDetailViewModel
+
+    private val resultReceiver =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { imagen ->
+            setImageToImageView(imagen)
+        }
+
+    private lateinit var ivUser: ImageView
 
     //Para acomodar miembros (métodos/propiedades) estáticos
     companion object {
@@ -112,6 +125,20 @@ class UserDetailFragment : Fragment() {
         val btnEditar = view.findViewById<Button>(R.id.btnEditar)
         val btnGuardar = view.findViewById<Button>(R.id.btnGuardar)
         val lavLoading = view.findViewById<View>(R.id.lavLoading)
+        this.ivUser = view.findViewById(R.id.ivUser)
+
+        this.ivUser.setOnClickListener {
+            this.resultReceiver.launch(null)
+        }
+
+        this.user.foto?.let { userImg ->
+
+            val byteArray = Base64.decode(userImg, Base64.DEFAULT)
+            val bitMap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+
+            this.ivUser.setImageBitmap(bitMap)
+
+        }
 
         btnDelete.setOnClickListener {
 
@@ -220,6 +247,26 @@ class UserDetailFragment : Fragment() {
             }
 
         builder.create().show()
+    }
+
+    private fun setImageToImageView(imagen: Bitmap?) {
+
+        //Kotlin
+        imagen?.let { image ->
+            ivUser.setImageBitmap(image)
+
+            //Se convierte imagen a string Base64
+            val byteArrayOutput = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutput)
+
+            val byteArray = byteArrayOutput.toByteArray()
+
+            this.user.foto = Base64.encodeToString(
+                byteArray,
+                Base64.DEFAULT
+            )
+
+        }
     }
 
 }

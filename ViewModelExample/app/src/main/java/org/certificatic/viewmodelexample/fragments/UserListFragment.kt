@@ -13,12 +13,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import org.certificatic.dependencyinjectionexample.fragments.CreateUserFragment
 import org.certificatic.viewmodelexample.R
 import org.certificatic.viewmodelexample.adapter.UserListAdapter
 import org.certificatic.viewmodelexample.dto.UsuarioDTO
 import org.certificatic.viewmodelexample.viewmodel.UserListViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserListFragment : Fragment() {

@@ -51,6 +51,12 @@
             android:text="@string/active_placeholder"
             android:textSize="20sp" />
 
+        <ImageView
+            android:id="@+id/ivUser"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/user_icon" />
+
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="match_parent"

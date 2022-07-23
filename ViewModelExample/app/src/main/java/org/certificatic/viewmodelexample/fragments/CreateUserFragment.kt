@@ -1,8 +1,10 @@
-package org.certificatic.dependencyinjectionexample.fragments
+package org.certificatic.viewmodelexample.fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,15 +13,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.viewmodelexample.R
 import org.certificatic.viewmodelexample.dto.UsuarioDTO
 
-import org.certificatic.viewmodelexample.services.UserServiceWS
 import org.certificatic.viewmodelexample.viewmodel.CreateUserViewModel
-import javax.inject.Inject
+import java.io.ByteArrayOutputStream
 
 /**
  * A simple [Fragment] subclass.
@@ -29,9 +32,40 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CreateUserFragment : Fragment() {
 
-    //    @Inject
-//    lateinit var userService: UserServiceWS
     private lateinit var viewModel: CreateUserViewModel
+
+    private val resultReceiver =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { imagen ->
+            setImageToImageView(imagen)
+        }
+
+    private var stringBase64: String? = null
+
+    private fun setImageToImageView(imagen: Bitmap?) {
+        //JAVA:
+//        if (imagen != null) {
+//            ivImagen.setImageBitmap(imagen)
+//        }
+
+        //Kotlin
+        imagen?.let { image ->
+            ivImagen.setImageBitmap(image)
+
+            //Se convierte imagen a string Base64
+            val byteArrayOutput = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutput)
+
+            val byteArray = byteArrayOutput.toByteArray()
+
+            this.stringBase64 = Base64.encodeToString(
+                byteArray,
+                Base64.DEFAULT
+            )
+
+        }
+    }
+
+    private lateinit var ivImagen: ImageView
 
     companion object {
 
@@ -91,6 +125,12 @@ class CreateUserFragment : Fragment() {
         val cbActivo = view.findViewById<CheckBox>(R.id.cbActive)
 
         val btnGuardar = view.findViewById<Button>(R.id.btnGuardar)
+        val btnCamara = view.findViewById<Button>(R.id.btnCamara)
+        this.ivImagen = view.findViewById(R.id.ivImagen)
+
+        btnCamara.setOnClickListener {
+            this.resultReceiver.launch(null)
+        }
 
         btnGuardar.setOnClickListener {
 
@@ -112,8 +152,13 @@ class CreateUserFragment : Fragment() {
                 nombre = etName.text.toString(),
                 apellido = etApellido.text.toString(),
                 edad = edad,
-                activo = cbActivo.isChecked
+                activo = cbActivo.isChecked,
+                foto = this.stringBase64
             )
+
+//            this.stringBase64?.let { base64IMG ->
+//                user.foto = base64IMG
+//            }
 
             this.viewModel.createUser(user)
             //Se agrega el usuario creado a la lista por medio del servicio
