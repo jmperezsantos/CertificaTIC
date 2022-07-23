@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
 import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.viewmodelexample.R
 import org.certificatic.viewmodelexample.dto.UsuarioDTO
 
 import org.certificatic.viewmodelexample.services.UserServiceWS
+import org.certificatic.viewmodelexample.viewmodel.CreateUserViewModel
 import javax.inject.Inject
 
 /**
@@ -27,8 +29,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CreateUserFragment : Fragment() {
 
-    @Inject
-    lateinit var userService: UserServiceWS
+    //    @Inject
+//    lateinit var userService: UserServiceWS
+    private lateinit var viewModel: CreateUserViewModel
 
     companion object {
 
@@ -46,6 +49,20 @@ class CreateUserFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
 
+        }
+
+        //TODO configuración lógica del fragment
+
+        this.viewModel = ViewModelProvider(this).get(CreateUserViewModel::class.java)
+
+        this.viewModel.isUserCreated().observe(this) { idUsuario ->
+            showAlert("Usuario exitosamente creado: $idUsuario")
+            Log.d("MPS", "El nuevo usuario con id: $idUsuario")
+        }
+
+        this.viewModel.didErrorOccur().observe(this) { mensajeError ->
+            showAlert("Ocurrió un error!! $mensajeError")
+            Log.e("MPS", "Ocurrió un error al guardar al usuario: $mensajeError")
         }
     }
 
@@ -98,25 +115,18 @@ class CreateUserFragment : Fragment() {
                 activo = cbActivo.isChecked
             )
 
+            this.viewModel.createUser(user)
             //Se agrega el usuario creado a la lista por medio del servicio
             //userService.addUser(user)
-            this.userService.createUser(user, { nuevoId ->
-
-                showAlert("Usuario exitosamente creado: $nuevoId")
-
-                Log.d("MPS", "El nuevo usuario con id: $nuevoId")
-
-                lavLoading.visibility = View.INVISIBLE
-
-            }, { mensajeError ->
-
-                showAlert("Ocurrió un error!! $mensajeError")
-
-                Log.d("MPS", "Ocurrió un error al guardar al usuario: $mensajeError")
-
-                lavLoading.visibility = View.INVISIBLE
-
-            })
+//            this.userService.createUser(user, { nuevoId ->
+//                showAlert("Usuario exitosamente creado: $nuevoId")
+//                Log.d("MPS", "El nuevo usuario con id: $nuevoId")
+//                lavLoading.visibility = View.INVISIBLE
+//            }, { mensajeError ->
+//                showAlert("Ocurrió un error!! $mensajeError")
+//                Log.d("MPS", "Ocurrió un error al guardar al usuario: $mensajeError")
+//                lavLoading.visibility = View.INVISIBLE
+//            })
 
         }
 

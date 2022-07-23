@@ -77,9 +77,7 @@ class UserListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         this.lavLoading = view.findViewById(R.id.lavLoading)
-
         this.lvUsers = view.findViewById(R.id.lvUsers)
-
         this.srlSwipe = view.findViewById(R.id.srlSwipe)
         srlSwipe.setOnRefreshListener {
             getAllUsers()
