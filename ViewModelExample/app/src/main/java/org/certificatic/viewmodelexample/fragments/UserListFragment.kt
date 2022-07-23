@@ -20,7 +20,6 @@ import org.certificatic.viewmodelexample.dto.UsuarioDTO
 import org.certificatic.viewmodelexample.viewmodel.UserListViewModel
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
 
@@ -49,6 +48,7 @@ class UserListFragment : Fragment() {
 
         this.viewModel = ViewModelProvider(this).get(UserListViewModel::class.java)
 
+        //Observador de los "cambios" en los datos
         this.viewModel.getUsers().observe(this) { users ->
             populateData(users)
         }

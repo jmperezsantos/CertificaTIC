@@ -14,9 +14,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
+import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import org.certificatic.viewmodelexample.dto.UsuarioDTO
 import org.certificatic.viewmodelexample.services.UserServiceWS
+import org.certificatic.viewmodelexample.viewmodel.UserDetailViewModel
 import javax.inject.Inject
 
 
@@ -28,8 +30,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class UserDetailFragment : Fragment() {
 
-    @Inject
-    lateinit var userService: UserServiceWS
+    lateinit var viewModel: UserDetailViewModel
 
     //Para acomodar miembros (métodos/propiedades) estáticos
     companion object {
@@ -61,6 +62,26 @@ class UserDetailFragment : Fragment() {
             Log.d("MPS", "Llegó: $user")
 
         }
+
+        this.viewModel = ViewModelProvider(this)
+            .get(UserDetailViewModel::class.java)
+
+        this.viewModel.isUserUpdated().observe(this) { updated ->
+            if (updated) {
+                showDialog("Usuario actualizado exitosamente!!")
+            } else {
+                showDialog("El usuario no se actualizó!!")
+            }
+        }
+
+        this.viewModel.isUserDeleted().observe(this) { deleted ->
+            if (deleted) {
+                showDialog("Usuario eliminado exitosamente!!")
+            } else {
+                showDialog("El usuario no se eliminó!!")
+            }
+        }
+
     }
 
     override fun onCreateView(
@@ -127,26 +148,27 @@ class UserDetailFragment : Fragment() {
             this.user.edad = Integer.parseInt(tvAge.text.toString())
             this.user.activo = sActivo.isChecked
 
+            this.viewModel.updateUser(this.user)
+
             //UserService.instance.updateUser(this.user)
-            this.userService.updateUser(
-                this.user,
-                { updatedUser ->
-                    showDialog("Usuario actualizado exitosamente")
-
-                    lavLoading.visibility = View.INVISIBLE
-                },
-                { errorMessage ->
-                    showDialog(errorMessage)
-
-                    lavLoading.visibility = View.INVISIBLE
-                }
-            )
+//            this.userService.updateUser(
+//                this.user,
+//                { updatedUser ->
+//                    showDialog("Usuario actualizado exitosamente")
+//
+//                    lavLoading.visibility = View.INVISIBLE
+//                },
+//                { errorMessage ->
+//                    showDialog(errorMessage)
+//
+//                    lavLoading.visibility = View.INVISIBLE
+//                }
+//            )
         }
 
         tvName.setText(this.user.nombre)
         tvLastname.setText(this.user.apellido)
         tvAge.setText("${this.user.edad}")
-
         sActivo.isChecked = this.user.activo
 
     }
@@ -181,13 +203,14 @@ class UserDetailFragment : Fragment() {
             .setPositiveButton("Sí",
                 DialogInterface.OnClickListener { dialog, id ->
 
-                    this.userService.deleteUser(userToDelete.id!!,
-                        {
-                            showDialog("${userToDelete.nombre} ${userToDelete.apellido} eliminado exitosamente")
-                        },
-                        { errorMessage ->
-                            showDialog(errorMessage)
-                        })
+                    this.viewModel.deleteUser(userToDelete)
+//                    this.userService.deleteUser(userToDelete.id!!,
+//                        {
+//                            showDialog("${userToDelete.nombre} ${userToDelete.apellido} eliminado exitosamente")
+//                        },
+//                        { errorMessage ->
+//                            showDialog(errorMessage)
+//                        })
 
                 })
             .setNegativeButton("No") { dialog, id ->

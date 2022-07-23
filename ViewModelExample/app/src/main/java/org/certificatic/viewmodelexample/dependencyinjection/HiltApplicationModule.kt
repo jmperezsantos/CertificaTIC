@@ -1,13 +1,11 @@
 package org.certificatic.viewmodelexample.dependencyinjection
 
-import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
 import org.certificatic.viewmodelexample.services.UserServiceWS
-import org.certificatic.viewmodelexample.viewmodel.UserListViewModel
 import org.certificatic.viewmodelexample.wsclient.UserWSClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
