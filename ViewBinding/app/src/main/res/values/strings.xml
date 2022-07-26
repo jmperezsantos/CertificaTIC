@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ViewBinding</string>
+
+    <string name="title">Hola Mundo desde ViewBinding</string>
+    <string name="username_placeholder">Username:</string>
+    <string name="presiona">Presiona!!</string>
+    <string name="check_title">Este es un check!</string>
+    <string name="este_es_un_radio">Este es un Radio</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
