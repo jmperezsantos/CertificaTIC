@@ -21,8 +21,10 @@ import org.certificatic.composeexample.dto.MessageDTO
 import org.certificatic.composeexample.ui.theme.ComposeExampleTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ComposeExampleTheme() {
                 CreateMessageCard(MessageDTO("Manuel Pérez", "Hola Mundo!"))
@@ -32,11 +34,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun CreateMessageCard(message: MessageDTO) {
-        Column() {
+        Column() {//LinearLayout Vertical
 
-            Row {
+            Row {//LinearLayout Horizontal
 
-                Image(
+                Image(//ImageView
                     painter = painterResource(id = R.drawable.jetpack),
                     contentDescription = "Imagen",
                     Modifier
@@ -45,9 +47,10 @@ class MainActivity : ComponentActivity() {
                 )
 
                 Column() {
-                    Text(message.author, color = MaterialTheme.colors.primaryVariant)
+                    //TextView
+                    Text("Manuel Pérez")
 
-                    Text(message.body, color = MaterialTheme.colors.secondaryVariant)
+                    Text("Hola Mundo!!!")
                 }
 
             }
