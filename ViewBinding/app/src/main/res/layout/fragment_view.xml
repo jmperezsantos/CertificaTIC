@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragment.ViewBindingFragment">
 
-    <include android:id="@+id/headerContainer" layout="@layout/header" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textAlignment="center"
-        android:textSize="25sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragment.ViewBindingFragment">
 
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/username_placeholder" />
+        <include
+            android:id="@+id/headerContainer"
+            layout="@layout/header" />
 
-    <Button
-        android:id="@+id/btnAcceder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/presiona" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textAlignment="center"
+            android:textSize="25sp" />
 
-    <CheckBox
-        android:id="@+id/cbActivo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/check_title" />
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username_placeholder" />
 
-    <RadioButton
-        android:id="@+id/rbRadio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/este_es_un_radio" />
+        <Button
+            android:id="@+id/btnAcceder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/presiona" />
 
-    <ImageView
-        android:id="@+id/ivPlaneta"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/planeta" />
+        <CheckBox
+            android:id="@+id/cbActivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_title" />
 
-    <include android:id="@+id/footer" layout="@layout/footer" />
+        <RadioButton
+            android:id="@+id/rbRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/este_es_un_radio" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/ivPlaneta"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/planeta" />
+
+        <include
+            android:id="@+id/footer"
+            layout="@layout/footer" />
+
+    </LinearLayout>
+</layout>

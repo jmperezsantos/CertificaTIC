@@ -1,5 +1,9 @@
 package org.certificatic.viewmodelexample.dto
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import org.certificatic.viewmodelexample.R
 import java.io.Serializable
 
 data class UsuarioDTO(
@@ -11,6 +15,18 @@ data class UsuarioDTO(
     var nombre: String,
     var foto: String? = null
 ) : Serializable {
+
+    val fotoBitmap: Bitmap?
+        get() {
+
+            return if (this.foto != null) {
+                val bytes = Base64.decode(this.foto, Base64.DEFAULT)
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            } else {
+                null
+            }
+
+        }
 
     override fun toString(): String {
         return "UsuarioDTO(id=$id, activo=$activo, apellido='$apellido', edad=$edad, nombre='$nombre')"

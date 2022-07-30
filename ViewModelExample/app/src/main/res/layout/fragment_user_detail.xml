@@ -1,93 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".fragments.UserDetailFragment">
 
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="org.certificatic.viewmodelexample.dto.UsuarioDTO" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".fragments.UserDetailFragment">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/user_detail_title"
-            android:textAlignment="center"
-            android:textSize="25sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/tvName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name_placeholer"
-            android:selectAllOnFocus="true"
-            android:theme="@style/UserEditTextStyle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/user_detail_title"
+                android:textAlignment="center"
+                android:textSize="25sp" />
 
-        <EditText
-            android:id="@+id/tvLastname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/lastname_placeholder"
-            android:theme="@style/UserEditTextStyle" />
+            <EditText
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name_placeholer"
+                android:selectAllOnFocus="true"
+                android:text="@={user.nombre}"
+                android:theme="@style/UserEditTextStyle" />
 
-        <EditText
-            android:id="@+id/tvEdad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/age_placeholder"
-            android:inputType="number"
-            android:theme="@style/UserEditTextStyle" />
+            <EditText
+                android:id="@+id/tvLastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/lastname_placeholder"
+                android:text="@={user.apellido}"
+                android:theme="@style/UserEditTextStyle" />
 
-        <Switch
-            android:id="@+id/swActive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="@string/active_placeholder"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/tvAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/age_placeholder"
+                android:inputType="number"
+                android:text='@={"" + user.edad}'
+                android:theme="@style/UserEditTextStyle" />
 
-        <ImageView
-            android:id="@+id/ivUser"
-            android:layout_width="match_parent"
+            <Switch
+                android:id="@+id/swActive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={user.activo}"
+                android:enabled="false"
+                android:text="@string/active_placeholder"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/ivUser"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/user_icon"
+                app:imageBitmap="@{user.fotoBitmap}"
+                />
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
+                android:text="@string/btn_delete" />
+
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue"
+                android:text="@string/btn_edit" />
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/green"
+                android:text="@string/save_btn"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lavLoading"
+            android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/user_icon" />
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/loading" />
 
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/red"
-            android:text="@string/btn_delete" />
-
-        <Button
-            android:id="@+id/btnEditar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
-            android:text="@string/btn_edit" />
-
-        <Button
-            android:id="@+id/btnGuardar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/green"
-            android:text="@string/save_btn"
-            android:visibility="invisible" />
-    </LinearLayout>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lavLoading"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
-        android:visibility="invisible"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

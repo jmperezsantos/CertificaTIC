@@ -19,13 +19,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Switch
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
+import org.certificatic.viewmodelexample.databinding.FragmentUserDetailBinding
 import org.certificatic.viewmodelexample.dto.UsuarioDTO
-import org.certificatic.viewmodelexample.services.UserServiceWS
 import org.certificatic.viewmodelexample.viewmodel.UserDetailViewModel
 import java.io.ByteArrayOutputStream
-import javax.inject.Inject
 
 
 /**
@@ -34,16 +34,15 @@ import javax.inject.Inject
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class UserDetailFragment : Fragment() {
+class UserDetailFragment() : Fragment() {
 
-    lateinit var viewModel: UserDetailViewModel
+    private lateinit var viewModel: UserDetailViewModel
+    private lateinit var viewBinding: FragmentUserDetailBinding
 
     private val resultReceiver =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { imagen ->
             setImageToImageView(imagen)
         }
-
-    private lateinit var ivUser: ImageView
 
     //Para acomodar miembros (métodos/propiedades) estáticos
     companion object {
@@ -98,15 +97,17 @@ class UserDetailFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(
-            R.layout.fragment_user_detail,
-            container,
-            false
-        )
+
+        this.viewBinding = FragmentUserDetailBinding.inflate(inflater, container, false)
+        this.viewBinding.user = this.user
+
+        return this.viewBinding.root
+
     }
 
     //Configuración de UI
@@ -116,18 +117,7 @@ class UserDetailFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Declaración de variables
-        val tvName = view.findViewById<EditText>(R.id.tvName)
-        val tvLastname = view.findViewById<EditText>(R.id.tvLastname)
-        val tvAge = view.findViewById<EditText>(R.id.tvEdad)
-        val sActivo = view.findViewById<Switch>(R.id.swActive)
-        val btnDelete = view.findViewById<Button>(R.id.btnDelete)
-        val btnEditar = view.findViewById<Button>(R.id.btnEditar)
-        val btnGuardar = view.findViewById<Button>(R.id.btnGuardar)
-        val lavLoading = view.findViewById<View>(R.id.lavLoading)
-        this.ivUser = view.findViewById(R.id.ivUser)
-
-        this.ivUser.setOnClickListener {
+        this.viewBinding.ivUser.setOnClickListener {
             this.resultReceiver.launch(null)
         }
 
@@ -136,11 +126,11 @@ class UserDetailFragment : Fragment() {
             val byteArray = Base64.decode(userImg, Base64.DEFAULT)
             val bitMap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
 
-            this.ivUser.setImageBitmap(bitMap)
+            this.viewBinding.ivUser.setImageBitmap(bitMap)
 
         }
 
-        btnDelete.setOnClickListener {
+        this.viewBinding.btnDelete.setOnClickListener {
 
             //Se borra al usuario de la lista, por medio del servicio
             // UserService.instance.deleteUser(this.user.uid)
@@ -149,54 +139,35 @@ class UserDetailFragment : Fragment() {
 
         }
 
-        btnEditar.setOnClickListener {
+        this.viewBinding.btnEditar.setOnClickListener {
 
-            tvName.isEnabled = true
-            tvLastname.isEnabled = true
-            tvAge.isEnabled = true
-            sActivo.isEnabled = true
+            this.viewBinding.tvName.isEnabled = true
+            this.viewBinding.tvLastname.isEnabled = true
+            this.viewBinding.tvAge.isEnabled = true
+            this.viewBinding.swActive.isEnabled = true
 
-            tvName.requestFocus(0)
+            this.viewBinding.tvName.requestFocus(0)
             val inputManager = this.requireContext()
                 .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.showSoftInput(tvName, InputMethodManager.SHOW_IMPLICIT)
+            inputManager.showSoftInput(this.viewBinding.tvName, InputMethodManager.SHOW_IMPLICIT)
 
-            btnEditar.visibility = View.GONE
-            btnGuardar.visibility = View.VISIBLE
+            this.viewBinding.btnEditar.visibility = View.GONE
+            this.viewBinding.btnGuardar.visibility = View.VISIBLE
 
         }
 
-        btnGuardar.setOnClickListener {
+        this.viewBinding.btnGuardar.setOnClickListener {
 
-            lavLoading.visibility = View.VISIBLE
+            this.viewBinding.lavLoading.visibility = View.VISIBLE
 
-            this.user.nombre = tvName.text.toString()
-            this.user.apellido = tvLastname.text.toString()
-            this.user.edad = Integer.parseInt(tvAge.text.toString())
-            this.user.activo = sActivo.isChecked
+//            this.user.nombre = this.viewBinding.tvName.text.toString()
+//            this.user.apellido = this.viewBinding.tvLastname.text.toString()
+//            this.user.edad = Integer.parseInt(this.viewBinding.tvAge.text.toString())
+//            this.user.activo = this.viewBinding.swActive.isChecked
 
             this.viewModel.updateUser(this.user)
 
-            //UserService.instance.updateUser(this.user)
-//            this.userService.updateUser(
-//                this.user,
-//                { updatedUser ->
-//                    showDialog("Usuario actualizado exitosamente")
-//
-//                    lavLoading.visibility = View.INVISIBLE
-//                },
-//                { errorMessage ->
-//                    showDialog(errorMessage)
-//
-//                    lavLoading.visibility = View.INVISIBLE
-//                }
-//            )
         }
-
-        tvName.setText(this.user.nombre)
-        tvLastname.setText(this.user.apellido)
-        tvAge.setText("${this.user.edad}")
-        sActivo.isChecked = this.user.activo
 
     }
 
@@ -206,14 +177,15 @@ class UserDetailFragment : Fragment() {
 
         builder.setMessage(message)
             .setTitle("Atención!")
-            .setPositiveButton("Aceptar",
-                DialogInterface.OnClickListener { dialog, id ->
+            .setPositiveButton(
+                "Aceptar"
+            ) { dialog, id ->
 
-                    dialog.cancel()
+                dialog.cancel()
 
-                    this.requireActivity().supportFragmentManager.popBackStack()
+                this.requireActivity().supportFragmentManager.popBackStack()
 
-                })
+            }
 
         builder.create().show()
 
@@ -253,7 +225,7 @@ class UserDetailFragment : Fragment() {
 
         //Kotlin
         imagen?.let { image ->
-            ivUser.setImageBitmap(image)
+            this.viewBinding.ivUser.setImageBitmap(image)
 
             //Se convierte imagen a string Base64
             val byteArrayOutput = ByteArrayOutputStream()
