@@ -5,6 +5,9 @@ plugins {
     //Hilt
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+
+    //Parcelable
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -75,7 +78,7 @@ dependencies {
 
     //Lottie
     def lottieVersion = "5.2.0"
-    implementation "com.airbnb.android:lottie:$lottieVersion"
+    implementation "com.airbnb.android:lottie-compose:$lottieVersion"
 
     //SwipeRefreshLayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -84,4 +87,8 @@ dependencies {
     def hiltVersion = "2.42"
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    //Navigation
+    def nav_version = "2.5.1"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }

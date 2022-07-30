@@ -1,69 +1,78 @@
 package org.certificatic.phoneagendacomposeexample
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModel
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import dagger.hilt.android.AndroidEntryPoint
+import org.certificatic.phoneagendacomposeexample.composables.UserDetail
+import org.certificatic.phoneagendacomposeexample.composables.UserItem
+import org.certificatic.phoneagendacomposeexample.composables.UserList
 import org.certificatic.phoneagendacomposeexample.dto.UsuarioDTO
-import org.certificatic.phoneagendacomposeexample.services.UserServiceWS
 import org.certificatic.phoneagendacomposeexample.ui.theme.PhoneAgendaComposeExampleTheme
 import org.certificatic.phoneagendacomposeexample.viewmodel.UserListViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    lateinit var viewModel: UserListViewModel
-
-    private var users: List<UsuarioDTO> = listOf()
+    val viewModel by viewModels<UserListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this.viewModel = ViewModelProvider(this).get(UserListViewModel::class.java)
-        this.viewModel.getUsers().observe(this) {
-
-            this.users = it
-
-        }
-
         setContent {
             PhoneAgendaComposeExampleTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = "usersList"
                 ) {
-                    //UserList("Android")
+                    composable("usersList") {
+                        UserList(
+                            navController,
+                            viewModel.userList
+                        )
+                    }
+                    composable("userDetail/{userId}") {
+                        val userId =
+                            navController.currentBackStackEntry?.arguments?.get("userId")
+
+                        viewModel.userList.collectAsState().value.find { user -> user.id == userId }
+                            ?.let {
+                                //Composable
+                                UserDetail(it)
+                            }
+                    }
                 }
             }
         }
-    }
-}
 
-@Composable
-fun UserList(users:List<UsuarioDTO>) {
-
-    LazyColumn{
-        //users.
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PhoneAgendaComposeExampleTheme {
-        UserList("Android")
+        this.viewModel.loadUsers()
     }
 }
