@@ -59,7 +59,7 @@ fun UserItem(
         Spacer(modifier = Modifier.weight(1f))
 
         Checkbox(
-            checked = user.activo,
+            checked = user.activo == 1,
             onCheckedChange = null
         )
 

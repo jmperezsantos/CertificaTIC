@@ -10,26 +10,26 @@ interface UserWSClient {
 //    fun getAllUsers(): Call<List<UsuarioDTO>>
 
     //Obtener todos los usuarios
-    @GET("usuarios.json")
+    @GET("users.json")
     fun getAllUsers(): Call<
             Map<String, UsuarioDTO>
             >
 
     //Registrar un nuevo usuario
-    @POST("usuarios.json")
+    @POST("users.json")
     fun postUser(
         @Body usuario: UsuarioDTO
     ): Call<Map<String, String>>
 
     //Actualizar un usuario
-    @PUT("usuarios/{usuarioId}.json")
+    @PUT("users/{usuarioId}.json")
     fun putUser(
         @Body usuario: UsuarioDTO,
         @Path("usuarioId") usuarioId: String
     ): Call<UsuarioDTO>
 
     //Borrar un registro
-    @DELETE("usuarios/{usuarioId}.json")
+    @DELETE("users/{usuarioId}.json")
     fun deleteUser(
         @Path("usuarioId") usuarioId: String
     ): Call<Void>

@@ -6,12 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.certificatic.phoneagendacomposeexample.dto.UsuarioDTO
-import org.certificatic.phoneagendacomposeexample.services.UserServiceWS
+import org.certificatic.phoneagendacomposeexample.services.UserService
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateUserViewModel @Inject constructor(
-    private val userService: UserServiceWS
+    private val userService: UserService
 ) : ViewModel() {
 
     //Informa cuando el usuario es creado

@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
-import org.certificatic.phoneagendacomposeexample.services.UserServiceWS
+import org.certificatic.phoneagendacomposeexample.services.UserService
 import org.certificatic.phoneagendacomposeexample.wsclient.UserWSClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,7 +18,7 @@ class HiltApplicationModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://certificatic-wsexample-default-rtdb.firebaseio.com/")
+            .baseUrl("https://residencial-vivaldi-default-rtdb.firebaseio.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -35,8 +35,8 @@ class HiltApplicationModule {
 
     @Provides
     @Inject
-    fun provideUserService(wsClient: UserWSClient): UserServiceWS {
-        return UserServiceWS(wsClient)
+    fun provideUserService(wsClient: UserWSClient): UserService {
+        return UserService(wsClient)
     }
 
 }
